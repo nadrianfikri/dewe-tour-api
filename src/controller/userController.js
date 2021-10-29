@@ -32,7 +32,7 @@ exports.getUsers = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.send({
+    res.status(500).send({
       status: 'failed',
       message: 'server error',
     });
@@ -56,7 +56,29 @@ exports.getUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).send({
+      status: 'failed',
+      message: 'server error',
+    });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await User.destroy({
+      where: {
+        id,
+      },
+    });
+
     res.send({
+      status: 'success',
+      message: 'delete user success',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
       status: 'failed',
       message: 'server error',
     });
