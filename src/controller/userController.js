@@ -63,6 +63,40 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await User.update(req.body, {
+      where: {
+        id,
+      },
+    });
+
+    const updatedData = await User.findOne({
+      where: {
+        id,
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'password'],
+      },
+    });
+
+    res.send({
+      message: 'update data user is successfull',
+      data: {
+        user: updatedData,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 'failed',
+      message: 'server error',
+    });
+  }
+};
+
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,7 +105,6 @@ exports.deleteUser = async (req, res) => {
         id,
       },
     });
-
     res.send({
       status: 'success',
       message: `delete user with id: ${id} success`,
