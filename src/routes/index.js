@@ -6,6 +6,7 @@ const { addUser, getUsers, getUser, updateUser, deleteUser } = require('../contr
 const { addCountry, getAllCountry, getCountry, updateCountry, deleteCountry } = require('../controller/countryController');
 const { addTrip, getAllTrip, getTrip, updateTrip, deleteTrip } = require('../controller/tripController');
 const { addTransaction, getAllTransaction, getTransaction, updateTransaction, deleteTransaction } = require('../controller/transactionController');
+const { register } = require('../controller/authController');
 
 // routes user
 router.post('/users', addUser);
@@ -34,5 +35,8 @@ router.get('/transaction', getAllTransaction);
 router.get('/transaction/:id', getTransaction);
 router.put('/transaction/:id', updateTransaction);
 router.delete('/transaction/:id', deleteTransaction);
+
+// routes auth
+router.post('/register', register);
 
 module.exports = router;
