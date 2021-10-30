@@ -1,4 +1,4 @@
-const { Trip } = require('../../models');
+const { Trip, Country } = require('../../models');
 
 exports.addTrip = async (req, res) => {
   try {
@@ -22,8 +22,16 @@ exports.addTrip = async (req, res) => {
 exports.getAllTrip = async (req, res) => {
   try {
     const dataTrip = await Trip.findAll({
+      include: {
+        as: 'country',
+        model: Country,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'country_id'],
       },
     });
 
@@ -47,8 +55,15 @@ exports.getTrip = async (req, res) => {
       where: {
         id,
       },
+      include: {
+        as: 'country',
+        model: Country,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'country_id'],
       },
     });
     res.send({
@@ -78,8 +93,15 @@ exports.updateTrip = async (req, res) => {
       where: {
         id,
       },
+      include: {
+        as: 'country',
+        model: Country,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'country_id'],
       },
     });
 

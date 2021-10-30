@@ -2,6 +2,19 @@ const { Country } = require('../../models');
 
 exports.addCountry = async (req, res) => {
   try {
+    const countryExist = await Country.findOne({
+      where: {
+        name: req.body.name,
+      },
+    });
+
+    if (countryExist) {
+      return res.status(400).send({
+        status: 'failed',
+        message: 'country already exist',
+      });
+    }
+
     const data = req.body;
     await Country.create(data);
 
@@ -66,6 +79,19 @@ exports.getCountry = async (req, res) => {
 
 exports.updateCountry = async (req, res) => {
   try {
+    const countryExist = await Country.findOne({
+      where: {
+        name: req.body.name,
+      },
+    });
+
+    if (countryExist) {
+      return res.status(400).send({
+        status: 'failed',
+        message: 'country already exist',
+      });
+    }
+
     const { id } = req.params;
 
     await Country.update(req.body, {

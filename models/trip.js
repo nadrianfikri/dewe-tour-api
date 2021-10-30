@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Trip extends Model {
     /**
@@ -10,25 +8,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Trip.belongsTo(models.Country, {
+        as: 'country',
+        foreignKey: {
+          name: 'country_id',
+        },
+      });
+
+      Trip.hasMany(models.Transaction, {
+        as: 'transactions',
+        foreignKey: {
+          name: 'trip_id',
+        },
+      });
     }
-  };
-  Trip.init({
-    title: DataTypes.STRING,
-    country_id: DataTypes.INTEGER,
-    accomodation: DataTypes.STRING,
-    transportation: DataTypes.STRING,
-    eat: DataTypes.STRING,
-    day: DataTypes.INTEGER,
-    night: DataTypes.INTEGER,
-    dateTrip: DataTypes.DATE,
-    price: DataTypes.INTEGER,
-    quota: DataTypes.INTEGER,
-    description: DataTypes.TEXT,
-    images: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Trip',
-  });
+  }
+  Trip.init(
+    {
+      title: DataTypes.STRING,
+      country_id: DataTypes.INTEGER,
+      accomodation: DataTypes.STRING,
+      transportation: DataTypes.STRING,
+      eat: DataTypes.STRING,
+      day: DataTypes.INTEGER,
+      night: DataTypes.INTEGER,
+      dateTrip: DataTypes.DATE,
+      price: DataTypes.INTEGER,
+      quota: DataTypes.INTEGER,
+      description: DataTypes.TEXT,
+      images: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'Trip',
+    }
+  );
   return Trip;
 };

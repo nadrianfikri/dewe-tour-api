@@ -6,55 +6,62 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
+
       country_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Countries',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       accomodation: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       transportation: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       eat: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       day: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       night: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       dateTrip: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       quota: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       images: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Trips');
-  }
+  },
 };

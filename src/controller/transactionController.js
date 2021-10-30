@@ -1,4 +1,4 @@
-const { Transaction } = require('../../models');
+const { Transaction, User, Trip } = require('../../models');
 
 exports.addTransaction = async (req, res) => {
   try {
@@ -22,8 +22,25 @@ exports.addTransaction = async (req, res) => {
 exports.getAllTransaction = async (req, res) => {
   try {
     const dataTransaction = await Transaction.findAll({
+      include: [
+        {
+          as: 'user',
+          model: User,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          as: 'trip',
+          model: Trip,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'country_id'],
+          },
+        },
+      ],
+
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
       },
     });
 
@@ -43,14 +60,33 @@ exports.getAllTransaction = async (req, res) => {
 exports.getTransaction = async (req, res) => {
   try {
     const { id } = req.params;
+
     const dataTransaction = await Transaction.findOne({
       where: {
         id,
       },
+
+      include: [
+        {
+          as: 'user',
+          model: User,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          as: 'trip',
+          model: Trip,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'country_id'],
+          },
+        },
+      ],
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
       },
     });
+
     res.send({
       message: 'Get data success',
       data: dataTransaction,
@@ -78,8 +114,24 @@ exports.updateTransaction = async (req, res) => {
       where: {
         id,
       },
+      include: [
+        {
+          as: 'user',
+          model: User,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          as: 'trip',
+          model: Trip,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'country_id'],
+          },
+        },
+      ],
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
       },
     });
 
