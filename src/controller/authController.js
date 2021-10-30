@@ -3,6 +3,7 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// REGISTER HANDLE
 exports.register = async (req, res) => {
   // create validation scheme with joi
   const scheme = Joi.object({
@@ -68,6 +69,70 @@ exports.register = async (req, res) => {
     res.status(500).send({
       status: 'failed',
       message: 'server error',
+    });
+  }
+};
+
+// LOGIN HANDLE
+exports.login = async (req, res) => {
+  const scheme = Joi.object({
+    email: Joi.string().email().min(6).required(),
+    password: Joi.string().min(6).required(),
+  });
+
+  const { error } = scheme.validate(req.body);
+
+  // if error exist send validation error message
+  if (error)
+    return res.status(400).send({
+      error: {
+        message: error.details[0].message,
+      },
+    });
+
+  try {
+    const userExist = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'phone', 'address'],
+      },
+    });
+    // compare password between req.body and userExist
+    const isValid = await bcrypt.compare(req.body.password, userExist.password);
+
+    // check if not valid then return response bad request
+    if (!userExist) {
+      if (!isValid) {
+        return res.status(400).send({
+          status: 'failed',
+          message: 'Password is invalid',
+        });
+      }
+
+      return res.status(400).send({
+        status: 'failed',
+        message: 'Email is invalid',
+      });
+    }
+
+    // generate token
+    const token = jwt.sign({ id: userExist.id, role: userExist.role }, process.env.TOKEN_KEY);
+
+    res.status(200).send({
+      status: 'success...',
+      data: {
+        name: userExist.name,
+        email: userExist.email,
+        token,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 'failed',
+      message: 'Server Error',
     });
   }
 };
