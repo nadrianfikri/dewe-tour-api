@@ -5,7 +5,7 @@ exports.auth = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(401).send({ message: 'Unathorized' });
+    return res.status(401).send({ message: 'Access Denied' });
   }
 
   try {

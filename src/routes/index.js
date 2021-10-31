@@ -10,6 +10,7 @@ const { register, login } = require('../controller/authController');
 
 // middlewares
 const { auth, adminOnly } = require('../middlewares/auth');
+const { uploadfile } = require('../middlewares/uploadFile');
 
 // routes user
 router.post('/users', addUser);
@@ -19,14 +20,14 @@ router.put('/users/:id', updateUser);
 router.delete('/users/:id', deleteUser);
 
 // routes country
-router.post('/country', addCountry);
+router.post('/country', auth, adminOnly, addCountry);
 router.get('/country', getAllCountry);
 router.get('/country/:id', getCountry);
 router.put('/country/:id', updateCountry);
 router.delete('/country/:id', deleteCountry);
 
 // routes trip
-router.post('/trip', auth, adminOnly, addTrip);
+router.post('/trip', auth, adminOnly, uploadfile('images'), addTrip);
 router.get('/trip', getAllTrip);
 router.get('/trip/:id', getTrip);
 router.put('/trip/:id', updateTrip);
