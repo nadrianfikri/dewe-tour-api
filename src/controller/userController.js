@@ -3,12 +3,16 @@ const { User } = require('../../models');
 exports.addUser = async (req, res) => {
   try {
     const data = req.body;
-    await User.create(data);
+
+    const newUser = await User.create({
+      ...data,
+      avatar: 'avatar.jpg',
+    });
 
     res.send({
       status: 'success',
       message: 'add user success',
-      data: data,
+      data: newUser,
     });
   } catch (error) {
     console.log(error);
@@ -66,12 +70,19 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
+    const { ...data } = req.body;
 
-    await User.update(req.body, {
-      where: {
-        id,
+    await User.update(
+      {
+        ...data,
+        avatar: req.files.avatar[0].filename,
       },
-    });
+      {
+        where: {
+          id,
+        },
+      }
+    );
 
     const updatedData = await User.findOne({
       where: {

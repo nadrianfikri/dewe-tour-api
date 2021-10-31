@@ -47,6 +47,7 @@ exports.register = async (req, res) => {
       ...req.body,
       password: hashedPassword,
       role: 'user',
+      avatar: 'avatar.jpg',
     });
 
     // generate token
@@ -99,21 +100,22 @@ exports.login = async (req, res) => {
         exclude: ['createdAt', 'updatedAt', 'phone', 'address'],
       },
     });
+
+    if (!userExist) {
+      return res.status(400).send({
+        status: 'failed',
+        message: 'Email is wrong',
+      });
+    }
+
     // compare password between req.body and userExist
     const isValid = await bcrypt.compare(req.body.password, userExist.password);
 
     // check if not valid then return response bad request
-    if (!userExist) {
-      if (!isValid) {
-        return res.status(400).send({
-          status: 'failed',
-          message: 'Password is invalid',
-        });
-      }
-
+    if (!isValid) {
       return res.status(400).send({
         status: 'failed',
-        message: 'Email is invalid',
+        message: 'Password is invalid',
       });
     }
 

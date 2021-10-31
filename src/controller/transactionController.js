@@ -2,13 +2,27 @@ const { Transaction, User, Trip } = require('../../models');
 
 exports.addTransaction = async (req, res) => {
   try {
-    const data = req.body;
-    await Transaction.create(data);
+    const { id } = req.params;
+    const { ...data } = req.body;
+
+    const { price } = await Trip.findOne({
+      where: {
+        id,
+      },
+    });
+
+    const newTransaction = await Transaction.create({
+      ...data,
+      user_id: req.user.id,
+      trip_id: id,
+      total: price * req.body.qty,
+      attachment: 'default.jpg',
+    });
 
     res.send({
       status: 'success',
       message: 'add Transaction success',
-      data: data,
+      data: newTransaction,
     });
   } catch (error) {
     console.log(error);
@@ -27,7 +41,7 @@ exports.getAllTransaction = async (req, res) => {
           as: 'user',
           model: User,
           attributes: {
-            exclude: ['createdAt', 'updatedAt'],
+            exclude: ['createdAt', 'updatedAt', 'password', 'role'],
           },
         },
         {
@@ -103,12 +117,19 @@ exports.getTransaction = async (req, res) => {
 exports.updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
+    const { ...data } = req.body;
 
-    await Transaction.update(req.body, {
-      where: {
-        id,
+    await Transaction.update(
+      {
+        ...data,
+        attachment: req.files.attachment[0].filename,
       },
-    });
+      {
+        where: {
+          id,
+        },
+      }
+    );
 
     const updatedData = await Transaction.findOne({
       where: {

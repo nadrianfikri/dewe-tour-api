@@ -2,13 +2,39 @@ const { Trip, Country } = require('../../models');
 
 exports.addTrip = async (req, res) => {
   try {
-    const data = req.body;
-    await Trip.create(data);
+    const { ...data } = req.body;
+    const { images } = req.files;
+
+    const allImage = [];
+    for (let image of images) {
+      allImage.push(image.filename);
+    }
+
+    const newTrip = await Trip.create({
+      ...data,
+      images: JSON.stringify(allImage),
+    });
+
+    const dataTrip = await Trip.findOne({
+      where: {
+        id: newTrip.id,
+      },
+      include: {
+        as: 'country',
+        model: Country,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'country_id'],
+      },
+    });
 
     res.send({
       status: 'success',
       message: 'add trip success',
-      data: data,
+      data: dataTrip,
     });
   } catch (error) {
     console.log(error);
@@ -82,12 +108,25 @@ exports.getTrip = async (req, res) => {
 exports.updateTrip = async (req, res) => {
   try {
     const { id } = req.params;
+    const { ...data } = req.body;
+    const { images } = req.files;
 
-    await Trip.update(req.body, {
-      where: {
-        id,
+    const allImage = [];
+    for (let image of images) {
+      allImage.push(image.filename);
+    }
+
+    await Trip.update(
+      {
+        ...data,
+        images: JSON.stringify(allImage),
       },
-    });
+      {
+        where: {
+          id,
+        },
+      }
+    );
 
     const updatedData = await Trip.findOne({
       where: {
@@ -108,7 +147,7 @@ exports.updateTrip = async (req, res) => {
     res.send({
       message: 'update data trip is successfull',
       data: {
-        country: updatedData,
+        trip: updatedData,
       },
     });
   } catch (error) {
