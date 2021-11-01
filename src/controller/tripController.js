@@ -1,8 +1,8 @@
 const { Trip, Country } = require('../../models');
+const pathFile = 'http://localhost:5000/uploads/';
 
 exports.addTrip = async (req, res) => {
   try {
-    const { ...data } = req.body;
     const { images } = req.files;
 
     const allImage = [];
@@ -11,7 +11,7 @@ exports.addTrip = async (req, res) => {
     }
 
     const newTrip = await Trip.create({
-      ...data,
+      ...req.body,
       images: JSON.stringify(allImage),
     });
 
@@ -61,6 +61,14 @@ exports.getAllTrip = async (req, res) => {
       },
     });
 
+    dataTrip.forEach((data) => {
+      const arrImages = JSON.parse(data.images);
+      const images = arrImages.map((image) => pathFile + image);
+
+      data.images = images;
+      return data.images;
+    });
+
     res.send({
       message: 'Get all data success',
       data: dataTrip,
@@ -92,6 +100,12 @@ exports.getTrip = async (req, res) => {
         exclude: ['createdAt', 'updatedAt', 'country_id'],
       },
     });
+
+    const arrImages = JSON.parse(dataTrip.images);
+    const images = arrImages.map((data) => pathFile + data);
+
+    dataTrip.images = images;
+
     res.send({
       message: 'Get data success',
       data: dataTrip,

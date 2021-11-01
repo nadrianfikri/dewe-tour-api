@@ -1,9 +1,9 @@
 const { Transaction, User, Trip } = require('../../models');
+const pathFile = 'http://localhost:5000/uploads/';
 
 exports.addTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ...data } = req.body;
 
     const { price } = await Trip.findOne({
       where: {
@@ -11,18 +11,18 @@ exports.addTransaction = async (req, res) => {
       },
     });
 
-    const newTransaction = await Transaction.create({
-      ...data,
+    await Transaction.create({
+      ...req.body,
       user_id: req.user.id,
       trip_id: id,
       total: price * req.body.qty,
+      status: 'Waiting Payment',
       attachment: 'default.jpg',
     });
 
     res.send({
       status: 'success',
       message: 'add Transaction success',
-      data: newTransaction,
     });
   } catch (error) {
     console.log(error);
@@ -57,6 +57,8 @@ exports.getAllTransaction = async (req, res) => {
         exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
       },
     });
+
+    dataTransaction.forEach((data) => (data.attachment = pathFile + data.attachment));
 
     res.send({
       message: 'Get all data success',
@@ -101,6 +103,8 @@ exports.getTransaction = async (req, res) => {
       },
     });
 
+    dataTransaction.attachment = pathFile + dataTransaction.attachment;
+
     res.send({
       message: 'Get data success',
       data: dataTransaction,
@@ -117,11 +121,10 @@ exports.getTransaction = async (req, res) => {
 exports.updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ...data } = req.body;
 
     await Transaction.update(
       {
-        ...data,
+        ...req.body,
         attachment: req.files.attachment[0].filename,
       },
       {
@@ -130,6 +133,7 @@ exports.updateTransaction = async (req, res) => {
         },
       }
     );
+    console.log(req.files.attachment);
 
     const updatedData = await Transaction.findOne({
       where: {
@@ -155,6 +159,7 @@ exports.updateTransaction = async (req, res) => {
         exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
       },
     });
+    console.log(updatedData);
 
     res.send({
       message: 'update data Transaction is successfull',

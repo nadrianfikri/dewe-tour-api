@@ -1,4 +1,5 @@
 const { User } = require('../../models');
+const pathFile = 'http://localhost:5000/uploads/';
 
 exports.addUser = async (req, res) => {
   try {
@@ -30,6 +31,9 @@ exports.getUsers = async (req, res) => {
         exclude: ['createdAt', 'updatedAt', 'password'],
       },
     });
+
+    dataUsers.forEach((user) => (user.avatar = pathFile + user.avatar));
+
     res.send({
       message: 'Get data success',
       data: dataUsers,
@@ -54,6 +58,8 @@ exports.getUser = async (req, res) => {
         exclude: ['createdAt', 'updatedAt', 'password'],
       },
     });
+
+    dataUser.avatar = pathFile + dataUser.avatar;
     res.send({
       message: 'Get data success',
       data: dataUser,
