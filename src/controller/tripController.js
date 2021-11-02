@@ -5,10 +5,10 @@ exports.addTrip = async (req, res) => {
   try {
     const { images } = req.files;
 
-    const allImage = [];
-    for (let image of images) {
-      allImage.push(image.filename);
-    }
+    const allImage = images.map((image) => image.filename);
+    // for (let image of images) {
+    //   allImage.push(image.filename);
+    // }
 
     const newTrip = await Trip.create({
       ...req.body,
