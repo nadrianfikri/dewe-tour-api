@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
     email: Joi.string().email().min(10).required(),
     password: Joi.string().min(6).required(),
     phone: Joi.string().min(8).required(),
-    address: Joi.string().min(8).required(),
+    // address: Joi.string().min(8).required(),
   });
 
   const { error } = scheme.validate(req.body);
@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
         fullname: newUser.fullname,
         email: newUser.email,
         phone: newUser.phone,
-        address: newUser.address,
+        // address: newUser.address,
         token,
       },
     });
