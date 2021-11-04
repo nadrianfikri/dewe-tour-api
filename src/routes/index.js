@@ -6,7 +6,7 @@ const { addUser, getUsers, getUser, updateUser, deleteUser } = require('../contr
 const { addCountry, getAllCountry, getCountry, updateCountry, deleteCountry } = require('../controller/countryController');
 const { addTrip, getAllTrip, getTrip, updateTrip, deleteTrip } = require('../controller/tripController');
 const { addTransaction, getAllTransaction, getTransaction, updateTransaction, deleteTransaction } = require('../controller/transactionController');
-const { register, login } = require('../controller/authController');
+const { register, login, checkAuth } = require('../controller/authController');
 
 // middlewares
 const { auth, adminOnly } = require('../middlewares/auth');
@@ -43,5 +43,6 @@ router.delete('/transaction/:id', auth, deleteTransaction);
 // routes auth
 router.post('/register', register);
 router.post('/login', login);
+router.get('/check-auth', auth, checkAuth);
 
 module.exports = router;
