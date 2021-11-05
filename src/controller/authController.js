@@ -55,12 +55,12 @@ exports.register = async (req, res) => {
 
     // response
     res.send({
-      status: 'success',
+      status: 'Success',
       message: 'register user is successfull',
       data: {
         fullname: newUser.fullname,
         email: newUser.email,
-        phone: newUser.phone,
+        // phone: newUser.phone,
         // address: newUser.address,
         token,
       },
@@ -127,6 +127,7 @@ exports.login = async (req, res) => {
       data: {
         name: userExist.name,
         email: userExist.email,
+        role: userExist.role,
         token,
       },
     });
