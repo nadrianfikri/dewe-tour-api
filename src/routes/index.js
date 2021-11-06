@@ -35,7 +35,7 @@ router.delete('/trip/:id', auth, adminOnly, deleteTrip);
 
 // routes transaction
 router.post('/transaction/:id', auth, addTransaction);
-router.get('/transaction', auth, adminOnly, getAllTransaction);
+router.get('/transaction', auth, getAllTransaction);
 router.get('/transaction/:id', auth, getTransaction);
 router.put('/transaction/:id', auth, uploadfile('attachment'), updateTransaction);
 router.delete('/transaction/:id', auth, deleteTransaction);
