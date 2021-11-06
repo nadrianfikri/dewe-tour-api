@@ -11,7 +11,7 @@ exports.addTransaction = async (req, res) => {
       },
     });
 
-    await Transaction.create({
+    const data = await Transaction.create({
       ...req.body,
       user_id: req.user.id,
       trip_id: id,
@@ -23,6 +23,7 @@ exports.addTransaction = async (req, res) => {
     res.send({
       status: 'success',
       message: 'add Transaction success',
+      data,
     });
   } catch (error) {
     console.log(error);
