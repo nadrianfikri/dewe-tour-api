@@ -3,9 +3,7 @@ const pathFile = 'http://localhost:5000/uploads/';
 
 exports.addTrip = async (req, res) => {
   try {
-    const { images } = req.files;
-
-    const allImage = images.map((image) => image.filename);
+    const allImage = req.files.images.map((image) => image.filename);
 
     const newTrip = await Trip.create({
       ...req.body,
