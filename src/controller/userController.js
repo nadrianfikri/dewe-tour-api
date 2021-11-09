@@ -76,11 +76,10 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ...data } = req.body;
 
     await User.update(
       {
-        ...data,
+        ...req.body,
         avatar: req.files.avatar[0].filename,
       },
       {

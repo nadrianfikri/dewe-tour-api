@@ -2,6 +2,7 @@ const { User } = require('../../models');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const pathFile = 'http://localhost:5000/uploads/';
 
 // REGISTER HANDLE
 exports.register = async (req, res) => {
@@ -128,7 +129,7 @@ exports.login = async (req, res) => {
         id: userExist.id,
         fullname: userExist.fullname,
         email: userExist.email,
-        avatar: userExist.avatar,
+        avatar: pathFile + userExist.avatar,
         phone: userExist.phone,
         address: userExist.address,
         role: userExist.role,
@@ -170,7 +171,7 @@ exports.checkAuth = async (req, res) => {
           id: dataUser.id,
           fullname: dataUser.fullname,
           email: dataUser.email,
-          avatar: dataUser.avatar,
+          avatar: pathFile + dataUser.avatar,
           phone: dataUser.phone,
           address: dataUser.address,
           role: dataUser.role,

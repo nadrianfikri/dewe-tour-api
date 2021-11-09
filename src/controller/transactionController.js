@@ -126,7 +126,6 @@ exports.updateTransaction = async (req, res) => {
     await Transaction.update(
       {
         ...req.body,
-        user_id: req.user.id,
         attachment: req.files.attachment[0].filename,
       },
       {

@@ -16,7 +16,7 @@ const { uploadfile } = require('../middlewares/uploadFile');
 router.post('/users', addUser);
 router.get('/users', getUsers);
 router.get('/users/:id', getUser);
-router.put('/users/:id', auth, uploadfile('avatar'), updateUser);
+router.patch('/users/:id', auth, uploadfile('avatar'), updateUser);
 router.delete('/users/:id', auth, deleteUser);
 
 // routes country
