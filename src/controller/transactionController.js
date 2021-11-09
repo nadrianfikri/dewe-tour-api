@@ -88,7 +88,7 @@ exports.getTransaction = async (req, res) => {
           as: 'user',
           model: User,
           attributes: {
-            exclude: ['createdAt', 'updatedAt'],
+            exclude: ['createdAt', 'updatedAt', 'password', 'role'],
           },
         },
         {
@@ -126,6 +126,7 @@ exports.updateTransaction = async (req, res) => {
     await Transaction.update(
       {
         ...req.body,
+        user_id: req.user.id,
         attachment: req.files.attachment[0].filename,
       },
       {
