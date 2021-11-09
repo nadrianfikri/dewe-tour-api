@@ -14,7 +14,7 @@ exports.uploadfile = (imageFile) => {
   //file filtering only images
   const fileFilter = (req, file, cb) => {
     if (file.fieldname === imageFile) {
-      if (!file.originalname.match(/\.(jpg|JPG|JPEG|png|PNG|svg|SVG)$/)) {
+      if (!file.originalname.match(/\.(jpg|JPG|JPEG|jpeg|png|PNG|svg|SVG)$/)) {
         req.fileValidationError = {
           message: 'Only uploads images file',
         };

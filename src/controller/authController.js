@@ -97,7 +97,7 @@ exports.login = async (req, res) => {
         email: req.body.email,
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'phone', 'address'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     });
 
@@ -125,11 +125,12 @@ exports.login = async (req, res) => {
     res.status(200).send({
       status: 'success...',
       data: {
+        id: userExist.id,
         fullname: userExist.fullname,
         email: userExist.email,
+        avatar: userExist.avatar,
         phone: userExist.phone,
         address: userExist.address,
-        avatar: userExist.avatar,
         role: userExist.role,
         token,
       },

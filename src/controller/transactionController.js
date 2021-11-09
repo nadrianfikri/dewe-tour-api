@@ -55,7 +55,7 @@ exports.getAllTransaction = async (req, res) => {
       ],
 
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
+        exclude: ['createdAt', 'user_id', 'trip_id'],
       },
     });
 
