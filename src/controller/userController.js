@@ -77,17 +77,30 @@ exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await User.update(
-      {
-        ...req.body,
-        avatar: req.files.avatar[0].filename,
-      },
-      {
-        where: {
-          id,
+    if (req.files) {
+      await User.update(
+        {
+          ...req.body,
+          avatar: req.files.avatar[0].filename,
         },
-      }
-    );
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else {
+      await User.update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
 
     const updatedData = await User.findOne({
       where: {

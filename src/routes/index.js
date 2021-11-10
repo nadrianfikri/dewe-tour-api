@@ -23,14 +23,14 @@ router.delete('/users/:id', auth, deleteUser);
 router.post('/country', auth, adminOnly, addCountry);
 router.get('/country', getAllCountry);
 router.get('/country/:id', getCountry);
-router.put('/country/:id', auth, adminOnly, updateCountry);
+router.patch('/country/:id', auth, adminOnly, updateCountry);
 router.delete('/country/:id', auth, adminOnly, deleteCountry);
 
 // routes trip
 router.post('/trip', auth, adminOnly, uploadfile('images'), addTrip);
 router.get('/trip', getAllTrip);
 router.get('/trip/:id', getTrip);
-router.put('/trip/:id', auth, adminOnly, uploadfile('images'), updateTrip);
+router.patch('/trip/:id', auth, adminOnly, uploadfile('images'), updateTrip);
 router.delete('/trip/:id', auth, adminOnly, deleteTrip);
 
 // routes transaction

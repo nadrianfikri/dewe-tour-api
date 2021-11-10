@@ -123,18 +123,30 @@ exports.updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await Transaction.update(
-      {
-        ...req.body,
-        attachment: req.files.attachment[0].filename,
-      },
-      {
-        where: {
-          id,
+    if (req.files) {
+      await Transaction.update(
+        {
+          ...req.body,
+          attachment: req.files.attachment[0].filename,
         },
-      }
-    );
-    console.log(req.files.attachment);
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else {
+      await Transaction.update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
 
     const updatedData = await Transaction.findOne({
       where: {

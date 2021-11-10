@@ -117,25 +117,37 @@ exports.getTrip = async (req, res) => {
 exports.updateTrip = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ...data } = req.body;
-    const { images } = req.files;
 
-    const allImage = [];
-    for (let image of images) {
-      allImage.push(image.filename);
-    }
+    if (req.files) {
+      const allImage = [];
+      const { images } = req.files;
 
-    await Trip.update(
-      {
-        ...data,
-        images: JSON.stringify(allImage),
-      },
-      {
-        where: {
-          id,
-        },
+      for (let image of images) {
+        allImage.push(image.filename);
       }
-    );
+      await Trip.update(
+        {
+          ...req.body,
+          images: JSON.stringify(allImage),
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else {
+      await Trip.update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
 
     const updatedData = await Trip.findOne({
       where: {
