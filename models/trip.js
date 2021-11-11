@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       dateTrip: DataTypes.DATE,
       price: DataTypes.INTEGER,
       quota: DataTypes.INTEGER,
+      quotaFilled: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       images: DataTypes.STRING,
     },

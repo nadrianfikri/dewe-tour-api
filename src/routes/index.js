@@ -30,7 +30,7 @@ router.delete('/country/:id', auth, adminOnly, deleteCountry);
 router.post('/trip', auth, adminOnly, uploadfile('images'), addTrip);
 router.get('/trip', getAllTrip);
 router.get('/trip/:id', getTrip);
-router.patch('/trip/:id', auth, adminOnly, uploadfile('images'), updateTrip);
+router.patch('/trip/:id', auth, uploadfile('images'), updateTrip);
 router.delete('/trip/:id', auth, adminOnly, deleteTrip);
 
 // routes transaction
