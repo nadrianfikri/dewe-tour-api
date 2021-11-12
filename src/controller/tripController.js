@@ -22,7 +22,7 @@ exports.addTrip = async (req, res) => {
         },
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'country_id'],
+        exclude: ['updatedAt', 'country_id'],
       },
     });
 
@@ -54,6 +54,7 @@ exports.getAllTrip = async (req, res) => {
       attributes: {
         exclude: ['createdAt', 'updatedAt', 'country_id'],
       },
+      order: [['createdAt', 'DESC']],
     });
 
     dataTrip.forEach((data) => {

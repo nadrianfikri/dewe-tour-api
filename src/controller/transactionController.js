@@ -57,6 +57,7 @@ exports.getAllTransaction = async (req, res) => {
       attributes: {
         exclude: ['createdAt', 'user_id', 'trip_id'],
       },
+      order: [['updatedAt', 'DESC']],
     });
 
     dataTransaction.forEach((data) => (data.attachment = pathFile + data.attachment));
