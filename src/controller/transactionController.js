@@ -60,7 +60,11 @@ exports.getAllTransaction = async (req, res) => {
       order: [['updatedAt', 'DESC']],
     });
 
-    dataTransaction.forEach((data) => (data.attachment = pathFile + data.attachment));
+    dataTransaction.forEach((data) => {
+      data.attachment = pathFile + data.attachment;
+      data.user.avatar = pathFile + data.user.avatar;
+      return data;
+    });
 
     res.send({
       message: 'Get all data success',
