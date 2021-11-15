@@ -1,4 +1,4 @@
-const { Transaction, User, Trip } = require('../../models');
+const { Transaction, User, Trip, Country } = require('../../models');
 const pathFile = 'http://localhost:5000/uploads/';
 
 exports.addTransaction = async (req, res) => {
@@ -50,6 +50,13 @@ exports.getAllTransaction = async (req, res) => {
           model: Trip,
           attributes: {
             exclude: ['createdAt', 'updatedAt', 'country_id'],
+          },
+          include: {
+            as: 'country',
+            model: Country,
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
           },
         },
       ],
