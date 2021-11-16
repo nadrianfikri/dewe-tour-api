@@ -20,10 +20,38 @@ exports.addTransaction = async (req, res) => {
       attachment: 'default.jpg',
     });
 
+    const dataTransaction = await Transaction.findOne({
+      where: {
+        id: data.id,
+      },
+
+      include: [
+        {
+          as: 'user',
+          model: User,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password', 'role'],
+          },
+        },
+        {
+          as: 'trip',
+          model: Trip,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'country_id'],
+          },
+        },
+      ],
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'user_id', 'trip_id'],
+      },
+    });
+
+    dataTransaction.attachment = pathFile + dataTransaction.attachment;
+
     res.send({
       status: 'success',
       message: 'add Transaction success',
-      data,
+      dataTransaction,
     });
   } catch (error) {
     console.log(error);
@@ -42,7 +70,7 @@ exports.getAllTransaction = async (req, res) => {
           as: 'user',
           model: User,
           attributes: {
-            exclude: ['createdAt', 'updatedAt', 'password', 'role'],
+            exclude: ['createdAt', 'updatedAt', 'password'],
           },
         },
         {
